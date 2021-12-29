@@ -26,6 +26,58 @@ func TestProcessChecks(t *testing.T) {
 	}
 }
 
+func TestConvertBytes(t *testing.T) {
+	result, err := ParseSizeString("1GB")
+
+	if err != nil {
+		t.Fail()
+	}
+
+	if result != 1073741824 {
+		t.Fail()
+	}
+}
+
+func TestConvertBytesFloat(t *testing.T) {
+	result, err := ParseSizeString("2.5MB")
+
+	if err != nil {
+		t.Fail()
+	}
+
+	if result != 2621440 {
+		t.Fail()
+	}
+}
+
+func TestConvertBytesNegative(t *testing.T) {
+	_, err := ParseSizeString("-1B")
+
+	if err == nil {
+		t.Fail()
+	}
+}
+
+func TestConvertBytesFloatComma(t *testing.T) {
+	result, err := ParseSizeString("2,5MB")
+
+	if err != nil {
+		t.Fail()
+	}
+
+	if result != 2621440 {
+		t.Fail()
+	}
+}
+
+func TestConvertBytesShouldFail(t *testing.T) {
+	_, err := ParseSizeString("fail")
+
+	if err == nil {
+		t.Fail()
+	}
+}
+
 func GetTestSearcher() *MockFileSearcher {
 
 	s1 := "~/golang/test"
