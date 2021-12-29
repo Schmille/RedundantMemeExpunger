@@ -15,7 +15,7 @@ func TestSameBytes(t *testing.T) {
 func TestProcessChecks(t *testing.T) {
 	var searcher FileSearcher = GetTestSearcher()
 
-	checks, err:= processChecks(&searcher)
+	checks, err := processChecks(&searcher)
 
 	if checks[0] != "/mnt/g/test" {
 		t.Fail()
@@ -32,11 +32,11 @@ func GetTestSearcher() *MockFileSearcher {
 	s2 := "C:\\Users\\Test"
 	s3 := "/mnt/g/test"
 
-	var p = []string {s1, s2, s3}
+	var p = []string{s1, s2, s3}
 
-	b1 := []byte {0xFF, 0x32, 0x45, 0x78, 0x15}
-	b2 := []byte {0xDF, 0x3F, 0x25, 0x70, 0x10}
-	b3 := []byte {0xFF, 0x32, 0x45, 0x78, 0x15}
+	b1 := []byte{0xFF, 0x32, 0x45, 0x78, 0x15}
+	b2 := []byte{0xDF, 0x3F, 0x25, 0x70, 0x10}
+	b3 := []byte{0xFF, 0x32, 0x45, 0x78, 0x15}
 
 	m := make(map[string][]byte)
 	m[s1] = b1

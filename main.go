@@ -78,7 +78,7 @@ func sameBytes(searcher *FileSearcher) []string {
 			out = append(out, path)
 		}
 		verbose("\n")
-		
+
 		set.Add(hash)
 	}
 

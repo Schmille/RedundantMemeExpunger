@@ -12,19 +12,18 @@ import (
 )
 
 var opts struct {
-	Verbose bool  `short:"v" long:"verbose" description:"Show verbose outputs"`
-	Trial bool `short:"t" long:"trail-run" description:"Perform all actions, but do not delete anything"`
-	Input string `short:"i" long:"input-path" description:"Select the input folder"`
-	Backup bool `short:"b" long:"backup" description:"Instead of deleting, copy all files into a sub-folder"`
+	Verbose bool   `short:"v" long:"verbose" description:"Show verbose outputs"`
+	Trial   bool   `short:"t" long:"trail-run" description:"Perform all actions, but do not delete anything"`
+	Input   string `short:"i" long:"input-path" description:"Select the input folder"`
+	Backup  bool   `short:"b" long:"backup" description:"Instead of deleting, copy all files into a sub-folder"`
 }
 
 type NoopDeleter struct {
-
 }
 
 type MockFileSearcher struct {
 	paths []string
-	bytes map[string] []byte
+	bytes map[string][]byte
 }
 
 func (n *NoopDeleter) Delete(_ string) error {
@@ -32,25 +31,24 @@ func (n *NoopDeleter) Delete(_ string) error {
 	return nil
 }
 
-func (m *MockFileSearcher) GetFilePaths() []string  {
+func (m *MockFileSearcher) GetFilePaths() []string {
 	return m.paths
 }
 
-func (m *MockFileSearcher) GetBytes(path string) ([]byte, error)  {
+func (m *MockFileSearcher) GetBytes(path string) ([]byte, error) {
 	return m.bytes[path], nil
 }
 
 type StandardFileSearcher struct {
-	basePath string
-	childPaths map[string] fs.FileInfo
+	basePath   string
+	childPaths map[string]fs.FileInfo
 }
 
 type StandardDeleter struct {
-
 }
 
 type BackupDeleter struct {
-	inner Deleter
+	inner      Deleter
 	backupPath string
 }
 
@@ -59,7 +57,7 @@ func NewStandardFileSearcher(basePath string) (*StandardFileSearcher, error) {
 		return nil, errors.New("please provide an input path")
 	}
 
-	paths := make(map[string] fs.FileInfo)
+	paths := make(map[string]fs.FileInfo)
 
 	err := filepath.Walk(basePath, func(path string, info fs.FileInfo, err error) error {
 
@@ -84,7 +82,7 @@ func NewStandardFileSearcher(basePath string) (*StandardFileSearcher, error) {
 	}, nil
 }
 
-func (s *StandardFileSearcher) GetFilePaths() []string  {
+func (s *StandardFileSearcher) GetFilePaths() []string {
 	keys := make([]string, 0, len(s.childPaths))
 	for k := range s.childPaths {
 		keys = append(keys, k)
@@ -93,7 +91,7 @@ func (s *StandardFileSearcher) GetFilePaths() []string  {
 	return keys
 }
 
-func (s *StandardFileSearcher) GetBytes(path string) ([]byte, error)  {
+func (s *StandardFileSearcher) GetBytes(path string) ([]byte, error) {
 	return ioutil.ReadFile(path)
 }
 
