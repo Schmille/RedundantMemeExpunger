@@ -12,10 +12,10 @@ import (
 )
 
 var opts struct {
-	Verbose bool   `short:"v" long:"verbose" description:"Show verbose outputs"`
-	Trial   bool   `short:"t" long:"trail-run" description:"Perform all actions, but do not delete anything"`
-	Input   string `short:"i" long:"input-path" description:"Select the input folder"`
-	Backup  bool   `short:"b" long:"backup" description:"Instead of deleting, copy all files into a sub-folder"`
+	Verbose   bool   `short:"v" long:"verbose" description:"Show verbose outputs"`
+	Trial     bool   `short:"t" long:"trail-run" description:"Perform all actions, but do not delete anything"`
+	Input     string `short:"i" long:"input-path" description:"Select the input folder"`
+	Backup    bool   `short:"b" long:"backup" description:"Instead of deleting, copy all files into a sub-folder"`
 	SizeLimit string `short:"s" long:"size-limit" description:"Limit on the maximum size of files that should be processed" default:"3MB"`
 }
 
@@ -41,9 +41,9 @@ func (m *MockFileSearcher) GetBytes(path string) ([]byte, error) {
 }
 
 type StandardFileSearcher struct {
-	basePath   string
+	basePath    string
 	maxFileSize int64
-	childPaths map[string]fs.FileInfo
+	childPaths  map[string]fs.FileInfo
 }
 
 type StandardDeleter struct {
@@ -79,9 +79,9 @@ func NewStandardFileSearcher(basePath string, maxFileSize int64) (*StandardFileS
 	}
 
 	return &StandardFileSearcher{
-		basePath:   basePath,
+		basePath:    basePath,
 		maxFileSize: maxFileSize,
-		childPaths: paths,
+		childPaths:  paths,
 	}, nil
 }
 

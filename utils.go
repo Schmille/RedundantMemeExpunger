@@ -11,8 +11,8 @@ const (
 	GIGABYTE = "GB"
 	MEGABYTE = "MB"
 	KILOBYTE = "KB"
-	BYTE = "B"
-	EMPTY = ""
+	BYTE     = "B"
+	EMPTY    = ""
 )
 
 func ParseSizeString(input string) (int64, error) {

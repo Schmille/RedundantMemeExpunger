@@ -78,7 +78,6 @@ func TestConvertBytesShouldFail(t *testing.T) {
 	}
 }
 
-
 func GetTestSearcher() *MockFileSearcher {
 
 	s1 := "~/golang/test"
