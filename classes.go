@@ -136,17 +136,17 @@ func (d *BackupDeleter) Delete(path string) error {
 		return err
 	}
 
-	err = writer.Close()
-	if err != nil {
-		return err
-	}
-
 	_, err = io.Copy(writer, reader)
 	if err != nil {
 		return err
 	}
 
 	err = reader.Close()
+	if err != nil {
+		return err
+	}
+
+	err = writer.Close()
 	if err != nil {
 		return err
 	}
