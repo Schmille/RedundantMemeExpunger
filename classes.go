@@ -16,6 +16,7 @@ var opts struct {
 	Trial   bool   `short:"t" long:"trail-run" description:"Perform all actions, but do not delete anything"`
 	Input   string `short:"i" long:"input-path" description:"Select the input folder"`
 	Backup  bool   `short:"b" long:"backup" description:"Instead of deleting, copy all files into a sub-folder"`
+	SizeLimit string `short:"s" long:"size-limit" description:"Limit on the maximum size of files that should be processed" default:"3MB"`
 }
 
 type NoopDeleter struct {
@@ -41,6 +42,7 @@ func (m *MockFileSearcher) GetBytes(path string) ([]byte, error) {
 
 type StandardFileSearcher struct {
 	basePath   string
+	maxFileSize int64
 	childPaths map[string]fs.FileInfo
 }
 
@@ -52,7 +54,7 @@ type BackupDeleter struct {
 	backupPath string
 }
 
-func NewStandardFileSearcher(basePath string) (*StandardFileSearcher, error) {
+func NewStandardFileSearcher(basePath string, maxFileSize int64) (*StandardFileSearcher, error) {
 	if len(opts.Input) <= 0 {
 		return nil, errors.New("please provide an input path")
 	}
@@ -78,13 +80,20 @@ func NewStandardFileSearcher(basePath string) (*StandardFileSearcher, error) {
 
 	return &StandardFileSearcher{
 		basePath:   basePath,
+		maxFileSize: maxFileSize,
 		childPaths: paths,
 	}, nil
 }
 
 func (s *StandardFileSearcher) GetFilePaths() []string {
 	keys := make([]string, 0, len(s.childPaths))
-	for k := range s.childPaths {
+	for k, v := range s.childPaths {
+
+		if v.Size() > s.maxFileSize {
+			verboseLn(k + " too large to process. Skipping.")
+			continue
+		}
+
 		keys = append(keys, k)
 	}
 

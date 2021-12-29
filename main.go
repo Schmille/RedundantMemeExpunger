@@ -36,7 +36,13 @@ func main() {
 	}
 
 	var fileSearcher FileSearcher
-	fileSearcher, err = NewStandardFileSearcher(opts.Input)
+
+	maxSize, err := ParseSizeString(opts.SizeLimit)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fileSearcher, err = NewStandardFileSearcher(opts.Input, maxSize)
 
 	if err != nil {
 		log.Fatal(err)
